@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS storyPathsdb;
-CREATE DATABASE storyPathsdb;
+DROP DATABASE IF EXISTS storyPassdb;
+CREATE DATABASE storyPassdb;
 
