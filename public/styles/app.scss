@@ -1,0 +1,103 @@
+$background:rgb(230, 242, 245);
+$bgMenu: rgb(255,255,255);
+$border: rgb(121, 133, 192);
+
+
+
+.bodyContainer{
+    width: 90%;
+    max-width: 1200px;
+    min-width: 900px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 3fr 1fr;
+    margin: auto;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+#postContainer{
+  box-sizing: border-box;
+  background-color: rgb(255,255,255); 
+  margin-left: 15px;
+}
+#rightSideBar{
+  box-sizing: border-box;
+  background-color: rgb(255,255,255);
+}
+#postContainer{
+    padding: 10px 7px;
+
+    .postHeader{
+      position: relative;
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: 60px 85% 1fr;
+      height: 60px;
+      img{
+        width: 50px;
+      }
+      div{
+        p{
+          margin: 0;
+          padding: 0;
+        }
+        &:nth-child(1){
+          float: left;
+        }
+        &:nth-child(2){
+          max-width: 400px;
+          float: left;
+          
+        }
+        &:nth-child(3){
+          position: absolute;
+          right: 30px;
+          font-size: 1.3em;
+          font-weight: bold;
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+    .postBody{
+      margin-left: 60px;
+      margin-right: 30px;
+      height: 200px;
+
+    }
+    .postFooter{
+      height: 45px;
+      padding:10px  60px; 
+      box-sizing: border-box;
+      border-top: .01rem solid lighten($border,30%);
+      img{
+        width: 24px;
+        padding-right:15px;
+        cursor: pointer;
+      }
+    }
+}
+svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+  vertical-align: bottom;
+  color: chartreuse;
+}
+
+
+.boxTheme{
+  border: 1.3px solid  lighten($border,15%);
+  border-radius: 3px;
+}
+
+#imageProfile, #userName, #userId{
+  &:hover{
+    cursor: pointer;
+  }
+}
+@media screen and (min-width: 700px) {
+  #postContainer,#righSideBar {
+  }
+}
