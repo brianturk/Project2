@@ -1,0 +1,21 @@
+.list-group-item {
+    line-height: 2.5;
+  }
+  
+  .bglight{
+    border-bottom: 0.5px solid #7985c0 !important;
+  }
+  
+  #bglight{
+    a{
+      float: right;
+      padding: 0 20px;
+      text-decoration: none;
+      color: rgb(121, 133, 192);
+      &:link, &:active, &:visited{
+        color: rgb(121, 133, 192);
+      }
+    }
+    
+  }
+  
