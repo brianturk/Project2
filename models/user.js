@@ -17,8 +17,26 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
+
+  User.associate = models => {
+    User.belongsToMany(models.Story, {
+      through: "Contributor",
+      foreignKey: "userId"
+    });
+  };
+
+  User.associate = models => {
+    User.belongsToMany(models.Story, {
+      through: "Paragraph",
+      foreignKey: "userId"
+    });
+  };
 
   User.associate = models => {
     models.User.hasMany(models.Example);
