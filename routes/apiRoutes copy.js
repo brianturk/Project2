@@ -65,21 +65,4 @@ module.exports = app => {
     req.logout();
     res.redirect("/");
   });
-
-
-  app.post("/api/createStory", (req, res) => {
-    db.Story.create({
-      email: req.body.email,
-      password: req.body.password
-    })
-      .then(() => {
-        res.redirect(307, "/api/login");
-      })
-      .catch(err => {
-        res.status(422).json(err.errors[0].message);
-      });
-  });
-
-
-
 };
