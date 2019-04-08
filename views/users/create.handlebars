@@ -2,7 +2,7 @@
   <div class="col-8 offset-2">
     <h1>Hello {{user.firstName}}!</h1>
     <p>Here you can create a new story and add your friends to contribute to the story!</p>
-    <form class="clearfix mb-4"  id="createStory" action="POST">
+    <form class="clearfix mb-4" id="createStory" action="POST">
       <div class="form-group">
         <label for="createTitle">Title</label>
         <input type="text" id="createTitle" class="form-control" aria-describedby="title">
@@ -15,13 +15,14 @@
         <label for="totalCharacters">Total turns each person gets</label>
         <input type="text" id="createTotalTurns" class="form-control" aria-describedby="Total Turns">
       </div>
-       <div class="form-group">
+      <div class="form-group">
         <label for="firstParagraph">First Paragraph</label>
         <textarea type="text" id="createFirstParagraph" class="form-control" aria-describedby="Total Turns">
       </div>
-        <div class="form-group">
-        <label for="storyFriend1">First Paragraph</label>
-        <input type="email" id="createStoryFriend1" class="form-control" aria-describedby="Story Friend 1 EMail Adress">
+      <div class="form-group">
+        <label for="storyFriend1">Story Friend 1 eMail Address</label>
+        <input type="email" id="createStoryFriend1" class="form-control" aria-describedby="Story Friend 1 eMail Address">
+        <button id="button" class="btn btn-primary float-right">Add Friend</button>
       </div>
       <button id="submit" class="btn btn-primary float-right">Start Your Story</button>
     </form>
