@@ -36,18 +36,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Contributor.associate = function(models) {
-    models.Contributor.belongsTo(models.User, {
-      onDelete: "CASCADE",
-      foreignKey: "userId"
-    });
-  };
-
-  Contributor.associate = function(models) {
     models.Contributor.belongsTo(models.Story, {
       onDelete: "CASCADE",
       foreignKey: "storyId"
     });
   };
+
   // Story.associate = models => {
   //   models.User.hasMany(models.Story);
   // };

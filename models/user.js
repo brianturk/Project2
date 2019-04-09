@@ -24,20 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  // User.associate = models => {
-  //   User.belongsToMany(models.Story, {
-  //     through: "Contributor",
-  //     foreignKey: "userId"
-  //   });
-  // };
-
-  // User.associate = models => {
-  //   User.belongsToMany(models.Story, {
-  //     through: "Paragraph",
-  //     foreignKey: "userId"
-  //   });
-  // };
-
   User.associate = models => {
     models.User.hasMany(models.Example);
   };
