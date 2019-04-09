@@ -47,19 +47,19 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Story.associate = models => {
-    Story.belongsToMany(models.User, {
-      through: "Contributor",
-      foreignKey: "storyId"
-    });
-  };
+  // Story.associate = models => {
+  //   Story.belongsToMany(models.User, {
+  //     through: "Contributor",
+  //     foreignKey: "storyId"
+  //   });
+  // };
 
-  Story.associate = models => {
-    Story.belongsToMany(models.User, {
-      through: "Paragraph",
-      foreignKey: "storyId"
-    });
-  };
+  // Story.associate = models => {
+  //   Story.belongsToMany(models.User, {
+  //     through: "Paragraph",
+  //     foreignKey: "storyId"
+  //   });
+  // };
 
   return Story;
 };
