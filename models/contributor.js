@@ -1,24 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
   const Contributor = sequelize.define("Contributor", {
-    // storyId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false
-    // },
-    // userID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false
-    // },
+    storyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     userEmail: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         isEmail: true
       }
     },
     hasSignedUp: {
-      type: DataTypes:BO
-    }
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     userOrderNum: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -29,12 +29,25 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
     archived: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
     }
   });
 
+  Contributor.associate = function(models) {
+    models.Contributor.belongsTo(models.User, {
+      onDelete: "CASCADE",
+      foreignKey: "userId"
+    });
+  };
+
+  Contributor.associate = function(models) {
+    models.Contributor.belongsTo(models.Story, {
+      onDelete: "CASCADE",
+      foreignKey: "storyId"
+    });
+  };
   // Story.associate = models => {
   //   models.User.hasMany(models.Story);
   // };

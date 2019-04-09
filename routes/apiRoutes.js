@@ -67,19 +67,77 @@ module.exports = app => {
   });
 
 
-  app.post("/api/createStory", (req, res) => {
+  app.post("/api/createStory", isAuthenticated, (req, res) => {
+    var friends = JSON.parse(req.body.friends);
     db.Story.create({
-      email: req.body.email,
-      password: req.body.password
+      title: req.body.title,
+      creatorId: req.user.id,
+      nextUserId: 0,
+      totalCharacters: req.body.totalChar,
+      totalTurns: req.body.totalTurn,
+      storyCompleted: false
     })
-      .then(() => {
-        res.redirect(307, "/api/login");
+      .then(data => {
+        var storyId = data.id;
+        db.Paragraph.create({
+          storyId: storyId,
+          userId: req.user.id,
+          content: req.body.firstParagraph
+        }).then(data => {
+          friends.forEach(async function (value) {
+            var userId = await getUser(value);
+            var finished = await addUser(userId, value, storyId);
+          })
+          res.redirect(307, "/api/stories");
+        })
       })
       .catch(err => {
-        res.status(422).json(err.errors[0].message);
+        console.log(err);
+        // res.status(422).json(err.errors[0].message);
       });
   });
-
-
-
 };
+
+function getUser(email) {
+  return new Promise(async function (resolve, reject) {
+    db.User.findOne({
+      where: {
+        email: email
+      }
+    }).then(data => {
+      console.log(data);
+      if (data) {
+        resolve(data.id);
+      } else {
+        resolve(0);
+      }
+    });
+  })
+}
+
+function addUser(id, email, storyId) {
+  return new Promise(async function (resolve, reject) {
+    if (id === 0) {
+      var hasSignedUp = false;
+    } else {
+      var hasSignedUp = true;
+    }
+    db.Contributor.create({
+      storyId: storyId,
+      userId: id,
+      userEmail: email,
+      hasSignedUp: hasSignedUp,
+      userOrderNum: 0,
+      left: false,
+      archived: false
+    })
+      .then(data => {
+        resolve(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        resolve(true)
+      })
+  });
+}
+
