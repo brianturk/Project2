@@ -19,6 +19,35 @@ module.exports = app => {
     });
   });
 
+  // Load story page
+  app.get("/story/:storyId", isAuthenticated, (req, res) => {
+    db.Paragraph.findAll({
+      where: {
+        storyId: req.params.storyId
+      },
+      include: [db.User]
+    }).then(data => {
+
+      data = data.map(a => a.get({ plain: true }));
+      var paragraphs = data;
+      var storyId = data[0].storyId;
+      db.Story.findOne({
+        where: {
+          id: storyId
+        }
+      }).then(data => {
+        var story = data;
+        const hbsObject = {
+          paragraphs: paragraphs,
+          story: story
+        };
+
+        console.log(hbsObject);
+        res.render("users/story", hbsObject);
+      });
+    });
+  });
+
   // Load profile page
   app.get("/create", isAuthenticated, (req, res) => {
     db.User.findOne({

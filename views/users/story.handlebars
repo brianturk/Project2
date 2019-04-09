@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-8 offset-2">
+    <h1> {{story.title}}</h1>
+
+    {{#each paragraphs}}
+    <div class="row">
+      <div class="col-8">
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">{{content}}</p>
+          </div>
+        </div>
+      </div>
+       <div class="col-4">
+        <div class="card">
+          <div class="card-body bg-light">
+            <p class="card-text"><a href="mailto:{{User.email}}">{{User.firstName}}</a><br>
+            {{createdAt}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+  
+  </div>
+</div>
