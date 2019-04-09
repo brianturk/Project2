@@ -2,7 +2,7 @@ const db = require("../models");
 const isAuthenticated = require("../config/middleware/isAuthenticated");
 module.exports = app => {
   // Load signup page
-  app.get("/", (req, res) => res.render("users/home"));
+  app.get("/", (req, res) => res.render("users/signup"));
 
   // Load login page
   app.get("/login", (req, res) => res.render("users/login"));
@@ -15,7 +15,7 @@ module.exports = app => {
       },
       include: [db.Example]
     }).then(dbUser => {
-      res.render("users/profile", { user: dbUser });
+      res.render("users/home", { user: dbUser });
     });
   });
 
