@@ -19,6 +19,18 @@ module.exports = app => {
     });
   });
 
+  // Load profile page
+  app.get("/create", isAuthenticated, (req, res) => {
+    db.User.findOne({
+      where: {
+        id: req.user.id
+      }
+    }).then(data => {
+      // console.log(data);
+      res.render("users/create", { user: data });
+    });
+  });
+
   // Load example page and pass in an example by id
   app.get("/example/:id", isAuthenticated, (req, res) => {
     db.Example.findOne({ where: { id: req.params.id } }).then(dbExample => {
