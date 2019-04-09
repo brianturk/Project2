@@ -83,10 +83,14 @@ module.exports = app => {
           storyId: storyId,
           userId: req.user.id,
           content: req.body.firstParagraph
-        }).then(data => {
+        }).then(async data => {
+
+          //add creator as a contributor
+          var finished = await addUser(req.user.id, req.user.email, storyId);
+
           friends.forEach(async function (value) {
             var userId = await getUser(value);
-            var finished = await addUser(userId, value, storyId);
+            finished = await addUser(userId, value, storyId);
           })
           res.redirect(307, "/api/stories");
         })
