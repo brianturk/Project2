@@ -8,6 +8,9 @@ $(function() {
 $(document).on("input", "#nextParagraph", function () {
   var totalChar = $("#nextParagraph").data("chars");
 
+  let invalid = $("#nextParagraphInvalid");
+  invalid.attr("class", "invalid-feedback");
+  
   $("#charsLeft").text(
     totalChar -
     $("#nextParagraph")
@@ -21,27 +24,43 @@ $(document).on("input", "#nextParagraph", function () {
 
 $(document).on("click","#submitAddToStory", function(e) {
   e.preventDefault();
+  let invalid = $("#nextParagraphInvalid");
+  invalid.attr("class", "invalid-feedback");
 
+  if (($("#charsLeft").text < 0) || ($("#nextParagraph").val().trim() === "")) {
 
-  var newParagraph = {
-    content: $("#nextParagraph")
-      .val()
-      .trim(),
-    storyId: $("#nextParagraph").data("id"),
-    totalTurns: $("#nextParagraph").data("turns")
-  };
+    if ($("#charsLeft").text < 0) {
+      invalid.attr("class", "invalid-feedback d-block");
+      invalid.text("You put in too many characters.");
+    } else {
+      invalid.attr("class", "invalid-feedback d-block");
+      invalid.text("Your paragraph is blank.");
+    }
+  } else {
 
-
-  // Send the POST request.
-  $.ajax("/api/addToStory", {
-    type: "POST",
-    data: newParagraph
-  })
-    .then(data => {
-      location.reload();
+    var newParagraph = {
+      content: $("#nextParagraph")
+        .val()
+        .trim(),
+      storyId: $("#nextParagraph").data("id"),
+      totalTurns: $("#nextParagraph").data("turns")
+    };
+  
+  
+    // Send the POST request.
+    $.ajax("/api/addToStory", {
+      type: "POST",
+      data: newParagraph
     })
-    .catch({})
+      .then(data => {
+        location.reload();
+      })
+      .catch({})
+  
 
+  }
+
+  
 });
 
 
