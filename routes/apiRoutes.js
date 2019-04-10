@@ -52,8 +52,23 @@ module.exports = app => {
       email: req.body.email,
       password: req.body.password
     })
-      .then(() => {
-        res.redirect(307, "/api/login");
+      .then((data) => {
+        var id = data.id;
+
+        db.Contributor.update({
+          userId: id
+        },
+          {
+            where:
+            {
+              userEmail: req.body.email
+            }
+          }
+        ).then(data => {
+          res.redirect(307, "/api/login");
+        })
+
+
       })
       .catch(err => {
         res.status(422).json(err.errors[0].message);
