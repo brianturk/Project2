@@ -1,5 +1,6 @@
 const db = require("../models");
 const isAuthenticated = require("../config/middleware/isAuthenticated");
+
 module.exports = app => {
   // Load signup page
   app.get("/", (req, res) => res.render("users/signup"));
@@ -35,11 +36,44 @@ module.exports = app => {
         where: {
           id: storyId
         }
-      }).then(data => {
+      }).then(async data => {
         var story = data;
+
+        var colors = [
+          "bg-dark",
+          "bg-primary",
+          "bg-secondary",
+          "bg-success",
+          "bg-danger",
+          "bg-warning",
+          "bg-info"
+        ];
+        //figure whose turn it is
+        var turnUser = await getTurn(storyId);
+        var turnsLeft = story.totalTurns - turnUser.numEntries;
+
+        turnUser.turnsLeft = turnsLeft;
+
+        if (turnUser.userId === req.user.id) {
+          turnUser.isTurn = true;
+        } else {
+          turnUser.isTurn = false;
+        }
+
+        var x = 0;
+        paragraphs.forEach(function(value, key) {
+          // var randomColor = Math.floor(Math.random() * colors.length)
+
+          if (x === colors.length) { x = 0}
+          paragraphs[key].color = colors[key];
+          x++;
+
+        })
+
         const hbsObject = {
           paragraphs: paragraphs,
-          story: story
+          story: story,
+          turn: turnUser
         };
 
         console.log(hbsObject);
@@ -72,3 +106,49 @@ module.exports = app => {
   // Render 404 page for any unmatched routes
   app.get("*", (req, res) => res.render("404"));
 };
+
+
+function getTurn(storyId) {
+  return new Promise(async function (resolve, reject) {
+    db.sequelize.query(`SELECT
+                      a.storyId,
+                      a.userId,
+                        a.userEmail,
+                        a.userOrderNum,
+                        b.firstName,
+                      ifnull(numEntries,0) as numEntries
+                    FROM 
+                      storyPassdb.Contributors as a
+                        left join
+                      (select
+                          b.storyId,
+                          c.email,
+                                c.firstName,
+                          count(*) as numEntries
+                        from
+                          storyPassdb.Paragraphs as b
+                            left join
+                          storyPassdb.Users as c
+                            on
+                            b.userId = c.id
+                        where
+                          b.storyId = ${storyId}
+                        group by
+                          b.storyId,
+                          c.email,
+                                c.firstName) as b
+                        on
+                        a.storyId = b.storyId
+                        and a.userEmail = b.email
+                    where
+                      a.storyId = ${storyId}
+                    order by
+                      ifnull(numEntries,0),
+                        userOrderNum
+                    limit 1`, { type: db.sequelize.QueryTypes.SELECT })
+      .then(data => {
+        data = data[0];
+        resolve(data);
+      })
+  });
+}
