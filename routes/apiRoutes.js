@@ -164,7 +164,7 @@ module.exports = app => {
             finished = await addUser(userId, value, storyId, orderNum);
           })
           console.log('here')
-          res.redirect(307, "/stories");
+          res.redirect(307, "/profile");
         })
       })
       .catch(err => {

@@ -20,16 +20,21 @@ $(document).on("input", "#nextParagraph", function () {
 });
 
 
+$(document).on("click","#return",function(e) {
+  e.preventDefault;
 
+  window.location = "/profile";
+})
 
 $(document).on("click","#submitAddToStory", function(e) {
   e.preventDefault();
   let invalid = $("#nextParagraphInvalid");
   invalid.attr("class", "invalid-feedback");
 
-  if (($("#charsLeft").text < 0) || ($("#nextParagraph").val().trim() === "")) {
 
-    if ($("#charsLeft").text < 0) {
+  if ((parseInt($("#charsLeft").text()) < 0) || ($("#nextParagraph").val().trim() === "")) {
+
+    if (parseInt($("#charsLeft").text()) < 0) {
       invalid.attr("class", "invalid-feedback d-block");
       invalid.text("You put in too many characters.");
     } else {
@@ -65,40 +70,58 @@ $(document).on("click","#submitAddToStory", function(e) {
 
 
 
-$(document).on("click", "#submitCreateStory", function (e) {
+// $(document).on("click", "#submitCreateStory", function (e) {
+  $(document).on("submit", "#createStory", function (e) {
   e.preventDefault();
 
-  let friend = $("#createStoryFriend" + friendNum);
-  if (!emailExists(friend.val().trim()) && friend.val().trim() != "") {
-    friends.push(friend.val());
-  }
 
-  var newStory = {
-    title: $("#createTitle")
-      .val()
-      .trim(),
-    totalChar: $("#createTotalCharacters")
-      .val()
-      .trim(),
-    totalTurn: $("#createTotalTurns")
-      .val()
-      .trim(),
-    firstParagraph: $("#createFirstParagraph")
-      .val()
-      .trim(),
-    friends: JSON.stringify(friends)
-  };
+  let invalid = $("#createFirstParagraphInvalid");
+  invalid.attr("class", "invalid-feedback");
 
 
-  // Send the POST request.
-  $.ajax("/api/createStory", {
-    type: "POST",
-    data: newStory
-  })
-    .then(data => {
-      // console.log('here');
+
+  if ((parseInt($("#charsLeft").text()) < 0) || ($("#createFirstParagraph").val().trim() === "")) {
+
+    if (parseInt($("#charsLeft").text()) < 0) {
+      invalid.attr("class", "invalid-feedback d-block");
+      invalid.text("You put in too many characters.");
+    } else {
+      invalid.attr("class", "invalid-feedback d-block");
+      invalid.text("Your paragraph is blank.");
+    }
+  } else {
+    let friend = $("#createStoryFriend" + friendNum);
+    if (!emailExists(friend.val().trim()) && friend.val().trim() != "") {
+      friends.push(friend.val());
+    }
+  
+    var newStory = {
+      title: $("#createTitle")
+        .val()
+        .trim(),
+      totalChar: $("#createTotalCharacters")
+        .val()
+        .trim(),
+      totalTurn: $("#createTotalTurns")
+        .val()
+        .trim(),
+      firstParagraph: $("#createFirstParagraph")
+        .val()
+        .trim(),
+      friends: JSON.stringify(friends)
+    };
+  
+  
+    // Send the POST request.
+    $.ajax("/api/createStory", {
+      type: "POST",
+      data: newStory
     })
-    .catch({})
+      .then(data => {
+        // console.log('here');
+      })
+      .catch({})
+  }
 })
 
 
@@ -180,6 +203,7 @@ $(document).on("input", "#createTotalCharacters", function () {
     .trim();
   var validNum = false;
 
+  $("#createFirstParagraphInvalid").attr("class", "invalid-feedback");
 
   var invalid = $("#createTotalCharactersInvalid");
   invalid.attr("class", "invalid-feedback");

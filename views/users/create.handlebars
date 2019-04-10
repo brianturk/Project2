@@ -22,6 +22,8 @@
       <div class="form-group">
         <label for="firstParagraph">Start the story! Characters Left: <span id="charsLeft"></span></label>
         <textarea type="text" id="createFirstParagraph" class="form-control" aria-describedby="Total Turns" required></textarea>
+         <div class="invalid-feedback" id="createFirstParagraphInvalid">
+            </div>
       </div>
       <div id="allFriends">
         <label for="storyFriend1">Enter the email addresses of friends to 'Pass' the story to:</label>
@@ -34,6 +36,7 @@
         </div>
         
       </div>
+      <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
       <button id="submitCreateStory" class="btn btn-primary float-left">Start Your Story</button>
     </form>
   </div>

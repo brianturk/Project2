@@ -3,7 +3,7 @@ const isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = app => {
   // Load signup page
-  app.get("/", (req, res) => res.render("users/signup"));
+  app.get("/", isAuthenticated, (req, res) => res.render("users/home"));
 
   // Load login page
   app.get("/login", (req, res) => res.render("users/login"));
@@ -99,7 +99,7 @@ module.exports = app => {
           });
 
         } else {
-          res.redirect(307, "/stories");
+          res.redirect(307, "/profile");
         }
 
       })
