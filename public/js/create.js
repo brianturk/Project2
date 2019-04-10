@@ -212,7 +212,7 @@ $(document).on("input", "#createTotalCharacters", function () {
   if (!isNaN(totalChar)) {
     var charNum = parseFloat(totalChar);
     if (Number.isInteger(charNum)) {
-      if (charNum > 0 && charNum < 500) {
+      if (charNum > 0 && charNum < 1000) {
         validNum = true;
       }
     }
@@ -220,7 +220,7 @@ $(document).on("input", "#createTotalCharacters", function () {
 
   if (!validNum) {
     invalid.attr("class", "invalid-feedback d-block");
-    invalid.text("Numbers between 1 and 500");
+    invalid.text("Numbers between 1 and 1000");
   } else {
     $("#charsLeft").text(
       charNum -
