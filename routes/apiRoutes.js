@@ -81,6 +81,60 @@ module.exports = app => {
     res.redirect("/");
   });
 
+  app.post("/api/addToStory", isAuthenticated, (req, res) => {
+    var totalTurns = req.body.totalTurns;
+    var storyId = req.body.storyId;
+    
+    db.Paragraph.create({
+      storyId: storyId,
+      userId: req.user.id,
+      content: req.body.content
+    }).then(data => {
+
+      //check to see if the story is completed by seeing if every had turns matching the total turns
+      db.sequelize.query(`SELECT 
+                            a.userId,
+                              ifNull(b.numEntries,0) as numEntries
+                          FROM 
+                            storyPassdb.Contributors as a
+                              left join
+                            (select
+                                userId,
+                                count(*) as numEntries
+                              from
+                                storyPassdb.Paragraphs as a
+                              where
+                                storyId = ${storyId}
+                              group by
+                                userId) as b
+                              on
+                              a.userId = b.userId
+                          where
+                              a.storyId = ${storyId}
+                          order by
+                            ifNull(b.numEntries,0)
+                          limit 1`, { type: db.sequelize.QueryTypes.SELECT })
+        .then(data => {
+          data = data[0];
+          if (data.numEntries >= totalTurns) { //story done.  update the completed flag
+            db.Story.update({
+              storyCompleted: true
+            },
+              {
+                where: {
+                  storyId: storyId
+                }
+              })
+              .then(data => res.json(data))
+
+          } else {
+            res.json(data)
+          }
+        });
+    })
+  });
+
+
 
   app.post("/api/createStory", isAuthenticated, (req, res) => {
     var friends = JSON.parse(req.body.friends);
@@ -101,11 +155,13 @@ module.exports = app => {
         }).then(async data => {
 
           //add creator as a contributor
-          var finished = await addUser(req.user.id, req.user.email, storyId);
+          var orderNum = 1
+          var finished = await addUser(req.user.id, req.user.email, storyId, orderNum);
+          orderNum = 0;
 
           friends.forEach(async function (value) {
             var userId = await getUser(value);
-            finished = await addUser(userId, value, storyId);
+            finished = await addUser(userId, value, storyId, orderNum);
           })
           res.redirect(307, "/api/stories");
         })
@@ -134,7 +190,7 @@ function getUser(email) {
   })
 }
 
-function addUser(id, email, storyId) {
+function addUser(id, email, storyId, orderNum) {
   return new Promise(async function (resolve, reject) {
     if (id === 0) {
       var hasSignedUp = false;
@@ -146,7 +202,7 @@ function addUser(id, email, storyId) {
       userId: id,
       userEmail: email,
       hasSignedUp: hasSignedUp,
-      userOrderNum: 0,
+      userOrderNum: orderNum,
       left: false,
       archived: false
     })

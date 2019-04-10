@@ -1,11 +1,11 @@
 
 /* BASIC */
 
-html {
+.htmlColor {
     background-color: #56baed;
   }
   
-  body {
+  .mainBody {
     font-family: "Poppins", sans-serif;
     height: 100vh;
   }

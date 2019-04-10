@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-10 offset-1">
+    <br>
+    <div class="card">
+      <div class="card-body bg-light">
+
+        <h1 class="story"> {{story.title}}</h1>
+
+        {{#each paragraphs}}
+        <div class="row mb-0">
+          <div class="col-9">
+            <div class="card">
+              <div class="card-body p-1">
+                <p class="card-text story storyContent">{{content}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="card rounded-circle">
+              <div class="card-body {{color}} text-white p-1 rounded-circle">
+                <p class="card-text par-info text-center" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                  title="<p class='text-left par-info'>{{User.firstName}}<br>{{User.email}}<br>{{formatDate createdAt}}</p>">
+                  {{User.firstName}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+ 
+
+    <br><br>
+    <div class="card">
+      <div class="card-body bg-light">
+        {{#if story.Completed}}
+        <p>This story is finished. Enjoy your story with your friends!</p>
+        <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
+        {{else}}
+          {{#if turn.isTurn}}
+          <form class="clearfix" id="createStory" action="POST">
+            <div class="form-group">
+              <label for="firstParagraph">It is your turn to add to the story! Characters Left: <span
+                  id="charsLeft">{{story.totalCharacters}}</span></label>
+              <textarea type="text" data-turns="{{story.totalTurns}}" data-chars="{{story.totalCharacters}}" data-id={{story.id}} id="nextParagraph" class="form-control"
+                aria-describedby="nextParagraph" required autofocus></textarea>
+            </div>
+            <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
+            <button id="submitAddToStory" class="btn btn-primary float-left">Add to the Story</button>
+          </form>
+          {{else}}<p>It isn't your turn. '{{turn.userEmail}}' is next to add to the story. They have {{turn.turnsLeft}}
+            turns left in the story.</p>
+          <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
+          {{/if}}
+        {{/if}}
+      </div>
+    </div>

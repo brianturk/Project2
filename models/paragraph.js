@@ -19,9 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       foreignKey: "userId"
     });
-  };
 
-  Paragraph.associate = function(models) {
     models.Paragraph.belongsTo(models.Story, {
       onDelete: "CASCADE",
       foreignKey: "storyId"
