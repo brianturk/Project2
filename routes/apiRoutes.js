@@ -46,7 +46,7 @@ module.exports = app => {
   // how we configured our Sequelize User Model. If the user is created successfully, proceed to log the user in,
   // otherwise send back an error
   app.post("/api/signup", (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     db.User.create({
       firstName: req.body.firstName,
       email: req.body.email,
@@ -69,7 +69,7 @@ module.exports = app => {
   app.post("/api/addToStory", isAuthenticated, (req, res) => {
     var totalTurns = req.body.totalTurns;
     var storyId = req.body.storyId;
-    
+
     db.Paragraph.create({
       storyId: storyId,
       userId: req.user.id,
@@ -107,7 +107,7 @@ module.exports = app => {
             },
               {
                 where: {
-                  storyId: storyId
+                  id: storyId
                 }
               })
               .then(data => res.json(data))
@@ -148,7 +148,8 @@ module.exports = app => {
             var userId = await getUser(value);
             finished = await addUser(userId, value, storyId, orderNum);
           })
-          res.redirect(307, "/api/stories");
+          console.log('here')
+          res.redirect(307, "/stories");
         })
       })
       .catch(err => {
@@ -165,7 +166,7 @@ function getUser(email) {
         email: email
       }
     }).then(data => {
-      console.log(data);
+      // console.log(data);
       if (data) {
         resolve(data.id);
       } else {

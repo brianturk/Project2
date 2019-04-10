@@ -22,64 +22,87 @@ module.exports = app => {
 
   // Load story page
   app.get("/story/:storyId", isAuthenticated, (req, res) => {
-    db.Paragraph.findAll({
+    //first we need to see if this user is authorized to see this story.  If not, then send them back to their list of stories.
+    db.Contributor.findOne({
       where: {
+        userId: req.user.id,
         storyId: req.params.storyId
-      },
-      include: [db.User]
-    }).then(data => {
+      }
+    })
+      .then(data => {
+        if (data) {
 
-      data = data.map(a => a.get({ plain: true }));
-      var paragraphs = data;
-      var storyId = data[0].storyId;
-      db.Story.findOne({
-        where: {
-          id: storyId
-        }
-      }).then(async data => {
-        var story = data;
+          db.Paragraph.findAll({
+            where: {
+              storyId: req.params.storyId
+            },
+            include: [db.User],
+            order: [['createdAt', 'ASC']]
+          }).then(data => {
 
-        var colors = [
-          "bg-dark",
-          "bg-primary",
-          "bg-secondary",
-          "bg-success",
-          "bg-danger",
-          "bg-warning",
-          "bg-info"
-        ];
-        //figure whose turn it is
-        var turnUser = await getTurn(storyId);
-        var turnsLeft = story.totalTurns - turnUser.numEntries;
+            data = data.map(a => a.get({ plain: true }));
+            var paragraphs = data;
+            var storyId = data[0].storyId;
+            db.Story.findOne({
+              where: {
+                id: storyId
+              }
+            }).then(async data => {
+              var story = data;
 
-        turnUser.turnsLeft = turnsLeft;
+              var colors = [
+                "bg-dark",
+                "bg-primary",
+                "bg-secondary",
+                "bg-success",
+                "bg-danger",
+                "bg-warning",
+                "bg-info"
+              ];
+              //figure whose turn it is
+              var turnUser = await getTurn(storyId);
+              var userOrderNumber = turnUser.userOrderNum;
+              var turnsLeft = story.totalTurns - turnUser.numEntries;
 
-        if (turnUser.userId === req.user.id) {
-          turnUser.isTurn = true;
+              if (userOrderNumber === 0) {  //person hasn't been assigned an order yet.  Give them the next order.
+                var updateTurn = await setTurn(storyId, req.user.id);
+              }
+
+              turnUser.turnsLeft = turnsLeft;
+
+              if (turnUser.userId === req.user.id) {
+                turnUser.isTurn = true;
+              } else {
+                turnUser.isTurn = false;
+              }
+
+              var x = 0;
+              paragraphs.forEach(function (value, key) {
+                // var randomColor = Math.floor(Math.random() * colors.length)
+
+                if (x === colors.length) { x = 0 }
+                paragraphs[key].color = colors[key];
+                x++;
+
+              })
+
+              const hbsObject = {
+                paragraphs: paragraphs,
+                story: story,
+                turn: turnUser,
+                user: req.user
+              };
+
+              console.log(hbsObject);
+              res.render("users/story", hbsObject);
+            });
+          });
+
         } else {
-          turnUser.isTurn = false;
+          res.redirect(307, "/stories");
         }
 
-        var x = 0;
-        paragraphs.forEach(function(value, key) {
-          // var randomColor = Math.floor(Math.random() * colors.length)
-
-          if (x === colors.length) { x = 0}
-          paragraphs[key].color = colors[key];
-          x++;
-
-        })
-
-        const hbsObject = {
-          paragraphs: paragraphs,
-          story: story,
-          turn: turnUser
-        };
-
-        console.log(hbsObject);
-        res.render("users/story", hbsObject);
-      });
-    });
+      })
   });
 
   // Load profile page
@@ -106,6 +129,29 @@ module.exports = app => {
   // Render 404 page for any unmatched routes
   app.get("*", (req, res) => res.render("404"));
 };
+
+function setTurn(storyId, userId) {
+  return new Promise(async function (resolve, reject) {
+    //get max turn number
+    db.sequelize.query(`select max(userOrderNum) as maxOrderNum from storyPassdb.Contributors
+                        where storyId = ${storyId}`, { type: db.sequelize.QueryTypes.SELECT })
+      .then(data => {
+        data = data[0];
+        var nextOrder = data.maxOrderNum + 1;
+
+        db.Contributor.update({
+          userOrderNum: nextOrder
+        },
+          {
+            where: {
+              storyId: storyId,
+              userId: userId
+            }
+          })
+          .then(data => resolve(true))
+      })
+  })
+}
 
 
 function getTurn(storyId) {
@@ -148,6 +194,7 @@ function getTurn(storyId) {
                     limit 1`, { type: db.sequelize.QueryTypes.SELECT })
       .then(data => {
         data = data[0];
+        console.log(data);
         resolve(data);
       })
   });

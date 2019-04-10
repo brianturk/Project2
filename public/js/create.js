@@ -28,10 +28,9 @@ $(document).on("click","#submitAddToStory", function(e) {
       .val()
       .trim(),
     storyId: $("#nextParagraph").data("id"),
-    totalTurns: $("#nextParagraph").data("totalTurns")
+    totalTurns: $("#nextParagraph").data("turns")
   };
 
-  // console.log(newParagraph);
 
   // Send the POST request.
   $.ajax("/api/addToStory", {
@@ -51,7 +50,7 @@ $(document).on("click", "#submitCreateStory", function (e) {
   e.preventDefault();
 
   let friend = $("#createStoryFriend" + friendNum);
-  if (!emailExists(friend.val().trim())) {
+  if (!emailExists(friend.val().trim()) && friend.val().trim() != "") {
     friends.push(friend.val());
   }
 
