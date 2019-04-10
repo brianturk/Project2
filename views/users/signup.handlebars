@@ -1,26 +1,29 @@
-<div class="row">
-    <div class="col-md-12">
-        <h1>Sign Up Page</h1>
+{{!-- <link rel="stylesheet" href="/styles/signup.css"> --}}
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h1>Sign Up</h1>
+
+    <!-- Icon -->
+    {{!-- <div class="fadeIn first">
+      <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+    </div> --}}
+
+    <!-- Login Form -->
+    <form id="user-sign-up"> 
+      <input type="text" id="firstName" class="fadeIn second" name="first name" placeholder="first name" autofocus required> 
+      <input type="text" id="email" class="fadeIn second" name="email" placeholder="email" required>
+      <input type="password" id="password" class="fadeIn third" name="login" placeholder="password" required>
+      <input type="submit" class="fadeIn fourth" value="Sign up">
+    </form>
+
+    <!-- Link to the Login page if you already have an account -->
+    <div id="formFooter">
+      <a class="underlineHover" href="/login">Have an account? Log in</a>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <form id="user-sign-up">
-            <div class="form-group">
-                <label for="name">First name</label>
-                <input type="first name" name="first name" class="form-control" id="firstName"
-                    placeholder="Enter first name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp"
-                    placeholder="Enter email">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+
+
+  </div>
+
 </div>
