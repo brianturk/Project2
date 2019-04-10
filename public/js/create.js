@@ -1,6 +1,52 @@
 var friends = [];
 var friendNum = 1;
 
+$(function() {
+  $("[data-toggle='tooltip']").tooltip();
+});
+
+$(document).on("input", "#nextParagraph", function () {
+  var totalChar = $("#nextParagraph").data("chars");
+
+  $("#charsLeft").text(
+    totalChar -
+    $("#nextParagraph")
+      .val()
+      .trim().length
+  );
+});
+
+
+
+
+$(document).on("click","#submitAddToStory", function(e) {
+  e.preventDefault();
+
+
+  var newParagraph = {
+    content: $("#nextParagraph")
+      .val()
+      .trim(),
+    storyId: $("#nextParagraph").data("id"),
+    totalTurns: $("#nextParagraph").data("totalTurns")
+  };
+
+  // console.log(newParagraph);
+
+  // Send the POST request.
+  $.ajax("/api/addToStory", {
+    type: "POST",
+    data: newParagraph
+  })
+    .then(data => {
+      location.reload();
+    })
+    .catch({})
+
+});
+
+
+
 $(document).on("click", "#submitCreateStory", function (e) {
   e.preventDefault();
 

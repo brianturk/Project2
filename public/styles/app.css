@@ -103,4 +103,8 @@ svg {
 #imageProfile:hover, #userName:hover, #userId:hover {
   cursor: pointer;
 }
+
+button {
+  font-family: 'Nova Script', cursive;
+}
 /*# sourceMappingURL=app.css.map */

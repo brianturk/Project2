@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const exphandlebars = require("express-handlebars");
+const moment = require("moment");
 const path = require("path");
 
 const db = require("./models");
@@ -37,7 +38,11 @@ const handlebars = exphandlebars.create({
   extname: "handlebars",
   layoutsDir: path.join(__dirname, "views/layouts"),
   defaultLayout: "main",
-  helpers: path.join(__dirname, "/helpers"),
+  helpers: 
+  {
+    formatDate: function (oldDate) { return moment(oldDate).format('MMMM Do YYYY, h:mm:ss a'); }
+  },
+  // helpers: path.join(__dirname, "/helpers"),
   partialsDir: path.join(__dirname, "views/partials")
 });
 
