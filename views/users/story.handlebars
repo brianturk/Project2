@@ -34,7 +34,7 @@
     <br><br>
     <div class="card">
       <div class="card-body bg-light">
-        {{#if story.Completed}}
+        {{#if story.storyCompleted}}
         <p>This story is finished. Enjoy your story with your friends!</p>
         <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
         {{else}}
@@ -45,6 +45,8 @@
                   id="charsLeft">{{story.totalCharacters}}</span></label>
               <textarea type="text" data-turns="{{story.totalTurns}}" data-chars="{{story.totalCharacters}}" data-id={{story.id}} id="nextParagraph" class="form-control"
                 aria-describedby="nextParagraph" required autofocus></textarea>
+               <div class="invalid-feedback" id="nextParagraphInvalid">
+            </div>
             </div>
             <button id="return" class="btn btn-secondary float-left mr-2">Return to Story List</button>
             <button id="submitAddToStory" class="btn btn-primary float-left">Add to the Story</button>
