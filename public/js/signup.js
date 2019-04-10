@@ -1,4 +1,4 @@
-$("#user-sign-up").on("click", function(e) {
+$("#user-sign-up").on("submit", function(e) {
   e.preventDefault();
   $.ajax({
     method: "POST",
