@@ -81,7 +81,7 @@
   
   /* FORM TYPOGRAPHY*/
   
-  input[type=button], input[type=submit], input[type=reset]  {
+  .input2[type=button], .input2[type=submit], .input2[type=reset]  {
     background-color: #56baed;
     border: none;
     color: white;
@@ -103,11 +103,11 @@
     transition: all 0.3s ease-in-out;
   }
   
-  input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+  .input2[type=button]:hover, .input2[type=submit]:hover, .input2[type=reset]:hover  {
     background-color: #39ace7;
   }
   
-  input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+  .input2[type=button]:active, .input2[type=submit]:active, .input2[type=reset]:active  {
     -moz-transform: scale(0.95);
     -webkit-transform: scale(0.95);
     -o-transform: scale(0.95);
@@ -115,7 +115,7 @@
     transform: scale(0.95);
   }
   
-  input[type=text], input[type=password] {
+  .input2[type=text], .input2[type=password] {
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
@@ -136,12 +136,12 @@
     border-radius: 5px 5px 5px 5px;
   }
   
-  input[type=text]:focus, input[type=password]:focus {
+  .input2[type=text]:focus, .input2[type=password]:focus {
     background-color: #fff;
     border-bottom: 2px solid #5fbae9;
   }
   
-  input[type=text]:placeholder, input[type=password]:placeholder {
+  .input2[type=text]:placeholder, .input2[type=password]:placeholder {
     color: #cccccc;
   }
   
