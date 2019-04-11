@@ -4,7 +4,8 @@
     "password": "password",
     "database": "storyPassdb",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "America/Los_Angeles"
   },
   "test": {
     "username": "root",
@@ -16,6 +17,7 @@
   },
   "production": {
     "use_env_variable": "JAWSDB_URL",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "America/Los_Angeles"
   }
 }
