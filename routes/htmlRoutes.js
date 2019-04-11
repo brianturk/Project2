@@ -3,7 +3,7 @@ const isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = app => {
   // Load signup page
-  app.get("/", isAuthenticated, (req, res) => res.render("/users/stories"));
+  app.get("/", isAuthenticated, (req, res) => res.redirect("/users/stories"));
 
   // Load login page
   app.get("/login", (req, res) => res.render("users/login"));
