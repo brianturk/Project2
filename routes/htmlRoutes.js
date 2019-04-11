@@ -202,7 +202,7 @@ function getTurn(storyId) {
                         b.firstName,
                       ifnull(numEntries,0) as numEntries
                     FROM 
-                      storyPassdb.Contributors as a
+                      Contributors as a
                         left join
                       (select
                           b.storyId,
@@ -210,9 +210,9 @@ function getTurn(storyId) {
                                 c.firstName,
                           count(*) as numEntries
                         from
-                          storyPassdb.Paragraphs as b
+                          Paragraphs as b
                             left join
-                          storyPassdb.Users as c
+                          Users as c
                             on
                             b.userId = c.id
                         where

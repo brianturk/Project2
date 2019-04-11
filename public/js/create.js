@@ -118,7 +118,7 @@ $(document).on("click","#submitAddToStory", function(e) {
       data: newStory
     })
       .then(data => {
-        // console.log('here');
+        window.location("/stories")
       })
       .catch({})
   }
