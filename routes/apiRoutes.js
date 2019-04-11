@@ -178,7 +178,7 @@ module.exports = app => {
 
 
 
-function addFriends(friends, storyId, orderNum, friendKey) {
+async function addFriends(friends, storyId, orderNum, friendKey) {
   return new Promise(async function (resolve, reject) {
     // console.log(friends);
     // console.log(friends[friendKey]);
@@ -191,7 +191,7 @@ function addFriends(friends, storyId, orderNum, friendKey) {
       resolve(true);
     } else {
       friendKey++;
-      addFriends(friends, storyId, orderNum, friendKey);
+      await addFriends(friends, storyId, orderNum, friendKey);
       resolve(true)
     }
   })
