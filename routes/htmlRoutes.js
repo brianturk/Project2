@@ -169,7 +169,7 @@ module.exports = app => {
 function setTurn(storyId, userId) {
   return new Promise(async function (resolve, reject) {
     //get max turn number
-    db.sequelize.query(`select max(userOrderNum) as maxOrderNum from storyPassdb.Contributors
+    db.sequelize.query(`select max(userOrderNum) as maxOrderNum from Contributors
                         where storyId = ${storyId}`, { type: db.sequelize.QueryTypes.SELECT })
       .then(data => {
         data = data[0];
