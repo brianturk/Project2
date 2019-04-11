@@ -107,6 +107,40 @@ module.exports = app => {
       })
   });
 
+
+  // Load story page
+  // app.get("/stories", isAuthenticated, (req, res) => {
+  //   db.sequelize.query(`SELECT 
+  //                         a.storyId,
+  //                           a.userId,
+  //                           a.userEmail,
+  //                           a.userOrderNum,
+  //                           b.title,
+  //                           b.storyCompleted,
+  //                           b.totalTurns,
+  //                           b.totalCharacters,
+  //                           b.creatorId,
+  //                           c.email,
+  //                           c.firstName
+  //                       FROM 
+  //                         storyPassdb.Contributors as a
+  //                           left join
+  //                         storyPassdb.Stories as b
+  //                           on
+  //                           a.storyId = b.id
+  //                               left join
+  //                         storyPassdb.Users as c
+  //                           on
+  //                               b.creatorId = c.id
+  //                       where
+  //                           a.userId = ${req.user.id}`, { type: db.sequelize.QueryTypes.SELECT })
+  //           .then(data => {
+  //               console.log(data);
+  //           })
+  // });
+
+
+
   // Load profile page
   app.get("/create", isAuthenticated, (req, res) => {
     db.User.findOne({
@@ -154,6 +188,8 @@ function setTurn(storyId, userId) {
       })
   })
 }
+
+
 
 
 function getTurn(storyId) {
