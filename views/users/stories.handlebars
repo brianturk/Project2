@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-10 offset-1">
+    <br>
+    <div class="card">
+      <div class="card-body bg-light">
+
+        <h1 class="story">Hi {{user.firstName}}, here are your stories:</h1>
+
+        {{#each stories}}
+
+        <div class="row mb-0">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                 <a href="/story/{{storyId}}">{{title}}</a><br>
+                <span class="smallText"><span class="valueLabel">Created By:</span> {{firstName}} ({{email}})</span><br>
+                <span class="smallText"><span class="valueLabel">Total Turns: </span>{{totalTurns}}</span><br>
+                <span class="smallText"><span class="valueLabel">Total Characters: </span>{{totalCharacters}}</span><br>
+                <span class="smallText"><span class="valueLabel">Created At: </span>{{formatDate createdAt}}</span><br>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+          
+        {{/each}}
+
+      </div>
+    </div>
+ 
+
+    

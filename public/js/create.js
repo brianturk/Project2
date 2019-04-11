@@ -23,7 +23,7 @@ $(document).on("input", "#nextParagraph", function () {
 $(document).on("click","#return",function(e) {
   e.preventDefault;
 
-  window.location = "/profile";
+  window.location = "/users/stories";
 })
 
 $(document).on("click","#submitAddToStory", function(e) {
@@ -118,7 +118,7 @@ $(document).on("click","#submitAddToStory", function(e) {
       data: newStory
     })
       .then(data => {
-        window.location("/stories")
+        window.location = "/users/stories"
       })
       .catch({})
   }
