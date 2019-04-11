@@ -136,6 +136,7 @@ module.exports = app => {
 
 
 
+
   app.post("/api/createStory", isAuthenticated, (req, res) => {
     var friends = JSON.parse(req.body.friends);
     db.Story.create({
@@ -159,11 +160,11 @@ module.exports = app => {
           var finished = await addUser(req.user.id, req.user.email, storyId, orderNum);
           orderNum = 0;
 
-          friends.forEach(async function (value) {
-            var userId = await getUser(value);
-            finished = await addUser(userId, value, storyId, orderNum);
-          })
-          console.log('here')
+          var friendKey = 0;
+          if (friends.length !== 0) {
+            await addFriends(friends, storyId, orderNum, friendKey);
+          }
+
           res.redirect(307, "/profile");
         })
       })
@@ -173,6 +174,28 @@ module.exports = app => {
       });
   });
 };
+
+
+
+function addFriends(friends, storyId, orderNum, friendKey) {
+  return new Promise(async function (resolve, reject) {
+    // console.log(friends);
+    // console.log(friends[friendKey]);
+    // console.log(friends[0]);
+    // console.log(friendKey);
+    var userId = await getUser(friends[friendKey]);
+    finished = await addUser(userId, friends[friendKey], storyId, orderNum);
+
+    if (friendKey < friends.length) {
+      resolve(true);
+    } else {
+      friendKey++;
+      addFriends(friends, storyId, orderNum, friendKey);
+      resolve(true)
+    }
+  })
+}
+
 
 function getUser(email) {
   return new Promise(async function (resolve, reject) {
