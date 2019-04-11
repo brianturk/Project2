@@ -96,13 +96,13 @@ module.exports = app => {
                             a.userId,
                               ifNull(b.numEntries,0) as numEntries
                           FROM 
-                            storyPassdb.Contributors as a
+                            Contributors as a
                               left join
                             (select
                                 userId,
                                 count(*) as numEntries
                               from
-                                storyPassdb.Paragraphs as a
+                                Paragraphs as a
                               where
                                 storyId = ${storyId}
                               group by
