@@ -9,3 +9,16 @@
 .storyContent {
     font-size: 80%;
 }
+
+.linkContent {
+    color: black;
+}
+
+.smallText {
+    font-size: 80%;
+}
+
+.valueLabel {
+    color: gray;
+}
+

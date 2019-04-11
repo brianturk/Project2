@@ -3,7 +3,7 @@ const isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = app => {
   // Load signup page
-  app.get("/", isAuthenticated, (req, res) => res.render("users/home"));
+  app.get("/", isAuthenticated, (req, res) => res.render("/users/stories"));
 
   // Load login page
   app.get("/login", (req, res) => res.render("users/login"));
@@ -21,6 +21,7 @@ module.exports = app => {
       res.render("users/home", { user: dbUser });
     });
   });
+
 
   // Load story page
   app.get("/story/:storyId", isAuthenticated, (req, res) => {
@@ -108,36 +109,55 @@ module.exports = app => {
   });
 
 
-  // Load story page
-  // app.get("/stories", isAuthenticated, (req, res) => {
-  //   db.sequelize.query(`SELECT 
-  //                         a.storyId,
-  //                           a.userId,
-  //                           a.userEmail,
-  //                           a.userOrderNum,
-  //                           b.title,
-  //                           b.storyCompleted,
-  //                           b.totalTurns,
-  //                           b.totalCharacters,
-  //                           b.creatorId,
-  //                           c.email,
-  //                           c.firstName
-  //                       FROM 
-  //                         storyPassdb.Contributors as a
-  //                           left join
-  //                         storyPassdb.Stories as b
-  //                           on
-  //                           a.storyId = b.id
-  //                               left join
-  //                         storyPassdb.Users as c
-  //                           on
-  //                               b.creatorId = c.id
-  //                       where
-  //                           a.userId = ${req.user.id}`, { type: db.sequelize.QueryTypes.SELECT })
-  //           .then(data => {
-  //               console.log(data);
-  //           })
-  // });
+  //Load story page
+  app.get("/users/stories", isAuthenticated, (req, res) => {
+    db.sequelize.query(`SELECT 
+                          a.storyId,
+                            a.userId,
+                            a.userEmail,
+                            a.userOrderNum,
+                            b.title,
+                            b.storyCompleted,
+                            b.totalTurns,
+                            b.totalCharacters,
+                            b.creatorId,
+                            c.email,
+                            c.firstName,
+                            b.createdAt
+                        FROM 
+                          Contributors as a
+                            left join
+                          Stories as b
+                            on
+                            a.storyId = b.id
+                                left join
+                          Users as c
+                            on
+                                b.creatorId = c.id
+                        where
+                            a.userId = ${req.user.id}
+                        order by
+                            b.createdAt DESC`, { type: db.sequelize.QueryTypes.SELECT })
+            .then(data => {
+              var hbsOject;
+
+              if(data) {
+                hbsObject = {
+                  stories: data,
+                  header: data[0],
+                  user: req.user
+                };
+                console.log(hbsObject);
+              } else {
+                hbsObject = {
+                  stories: [],
+                  header: "",
+                  user: req.user
+                }
+              }
+              res.render("users/stories", hbsObject);
+            })
+  });
 
 
 
