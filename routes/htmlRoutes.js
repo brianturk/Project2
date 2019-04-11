@@ -125,13 +125,13 @@ module.exports = app => {
                             c.firstName,
                             b.createdAt
                         FROM 
-                          storyPassdb.Contributors as a
+                          Contributors as a
                             left join
-                          storyPassdb.Stories as b
+                          Stories as b
                             on
                             a.storyId = b.id
                                 left join
-                          storyPassdb.Users as c
+                          Users as c
                             on
                                 b.creatorId = c.id
                         where
